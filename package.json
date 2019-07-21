@@ -1,0 +1,56 @@
+{
+  "name": "formik-components",
+  "version": "0.1.0",
+  "author": "Jannik Buschke",
+  "description": "Utility components for formik",
+  "displayName": "formik-components",
+  "keywords": [
+    "react",
+    "formik",
+    "form",
+    "utils"
+  ],
+  "sideEffects": false,
+  "license": "MIT",
+  "private": false,
+  "files": [
+    "lib",
+    "src",
+    "es"
+  ],
+  "module": "./es/index.js",
+  "main": "./lib/index.js",
+  "types": "./lib/types.d.ts",
+  "scripts": {
+    "build": "tsc && tsc -p tsconfig.es.json",
+    "tsc": "tsc && tsc -p tsconfig.es.json",
+    "watch": "tsc --watch",
+    "cleanbuild": "rm -r node_modules && npm install && tsc"
+  },
+  "dependencies": {
+    "lodash.get": "4.4.2"
+  },
+  "peerDependencies": {
+    "formik": ">= 1.4.1 < 2",
+    "react": ">= 16.8.0 < 17",
+    "react-dom": ">= 16.8.0 < 17",
+    "react-sortable-hoc": ">= 1.0.0 < 2"
+  },
+  "devDependencies": {
+    "@types/jest": "24.0.11",
+    "@types/lodash.get": "4.4.6",
+    "@types/node": "11.13.4",
+    "@types/react": "16.8.11",
+    "@types/react-dom": "16.8.4",
+    "formik": "1.5.8",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "tslib": "1.9.3",
+    "typescript": "3.4.5",
+    "react-sortable-hoc": "1.9.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jannikbuschke/formik-components/"
+  }
+}
