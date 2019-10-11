@@ -25,7 +25,8 @@
     "build": "tsc && tsc -p tsconfig.es.json",
     "tsc": "tsc && tsc -p tsconfig.es.json",
     "watch": "tsc --watch",
-    "cleanbuild": "rm -r node_modules && npm install && tsc"
+    "cleanbuild": "rm -r node_modules && npm install && tsc",
+    "prettier": "prettier --write src/**/*.* package.json"
   },
   "dependencies": {},
   "peerDependencies": {
@@ -44,7 +45,10 @@
     "react-dom": "16.10.2",
     "react-sortable-hoc": "1.10.1",
     "tslib": "1.10.0",
-    "typescript": "3.6.3"
+    "typescript": "3.6.3",
+    "eslint-config-prettier": "6.3.0",
+    "eslint-plugin-prettier": "3.1.1",
+    "prettier": "1.18.2"
   },
   "repository": {
     "type": "git",
