@@ -58,30 +58,21 @@ export function IfSubmitting({ children }: { children: React.ReactNode }) {
 }
 
 export function IfValidating({ children }: { children: React.ReactNode }) {
-  return (
-    <Field>
-      {({ field, form }: FieldProps<any>) => form.isValidating && children}/>
+    return <Field>
+        {({ field, form }: FieldProps<any>) => form.isValidating? children:null}/>
     </Field>
-  )
 }
 
 export function IfTouched({ children }: { children: React.ReactNode }) {
-  return (
-    <Field>
-      {({ field, form }: FieldProps<any>) => form.touched && children}/>
+    return <Field>
+        {({ field, form }: FieldProps<any>) => form.touched?children:null}/>
     </Field>
-  )
 }
 
 export function IfError({ children }: { children: React.ReactNode }) {
-  return (
-    <Field>
-      {({ field, form }: FieldProps<any>) =>
-        (form.error || form.errors) && children
-      }
-      />
+    return <Field>
+        {({ field, form }: FieldProps<any>) => (form.errors) && children}/>
     </Field>
-  )
 }
 
 export function IfField({
