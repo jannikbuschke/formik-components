@@ -19,4 +19,6 @@ export function AutoSave ({ delayMs }:{delayMs:number}) {
     React.useEffect(() => {
       debouncedSubmit();
     }, [debouncedSubmit, ctx.values]);
+
+    return null
   };
