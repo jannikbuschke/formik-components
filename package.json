@@ -22,7 +22,6 @@
   "main": "./lib/index.js",
   "types": "./lib/types.d.ts",
   "scripts": {
-    "build": "tsc && tsc -p tsconfig.es.json",
     "tsc": "tsc && tsc -p tsconfig.es.json",
     "watch": "tsc --watch",
     "cleanbuild": "rm -r node_modules && npm install && tsc",
