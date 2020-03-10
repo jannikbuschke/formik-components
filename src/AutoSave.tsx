@@ -1,40 +1,59 @@
-import * as React from 'react';
+import * as React from "react"
 
-import {  useFormikContext } from 'formik';
-import debounce from 'lodash.debounce';
+import { useFormikContext } from "formik"
+import debounce from "lodash.debounce"
 
-interface IAutoSaveContext{
-  pause:(pause:boolean)=>void
+interface IAutoSaveContext {
+  pause: (pause: boolean) => void
 }
 
-export const AutoSaveContext = React.createContext<IAutoSaveContext>({pause:()=>{}})
+export const AutoSaveContext = React.createContext<IAutoSaveContext>({
+  pause: () => {},
+})
 
-export function AutoSave ({ delayMs,pause }:{delayMs:number, pause: boolean}) {
-    const ctx = useFormikContext();
-    const debouncedSubmit = React.useCallback(
-      debounce(() => {
-        if (ctx.dirty&&!pause) {
-          ctx.submitForm().then(()=>{
-
-          })
-        }
-      }, delayMs),
-      [delayMs, ctx.dirty, ctx.submitForm,pause]
-    );
-  
-    React.useEffect(() => {
-      if(!pause){
-        debouncedSubmit();
+export function AutoSave({
+  delayMs,
+  pause,
+}: {
+  delayMs: number
+  pause: boolean
+}) {
+  const ctx = useFormikContext()
+  const debouncedSubmit = React.useCallback(
+    debounce(() => {
+      // this might not work
+      if (ctx.dirty && !ctx.isSubmitting) {
+        ctx.submitForm().then(() => {})
       }
-    }, [debouncedSubmit, ctx.values,pause]);
+    }, delayMs),
+    [delayMs, ctx.dirty, ctx.submitForm, pause],
+  )
 
-    return null
-  };
+  React.useEffect(() => {
+    if (!pause) {
+      debouncedSubmit()
+    }
+  }, [ctx.values, pause])
 
-  export function AutoSaveProvider({children}:{children:React.ReactElement|React.ReactElement[]}) {
-    const [pause,setPause]=React.useState(false)
-    const value = React.useMemo(()=>({
-      pause:(value:boolean)=>setPause(value)
-    }),[pause])
-    return <AutoSaveContext.Provider value={value}>{children}<AutoSave delayMs={1000} pause={pause}/></AutoSaveContext.Provider>
-  }
+  return null
+}
+
+export function AutoSaveProvider({
+  children,
+}: {
+  children: React.ReactElement | React.ReactElement[]
+}) {
+  const [pause, setPause] = React.useState(false)
+  const value = React.useMemo(
+    () => ({
+      pause: (value: boolean) => setPause(value),
+    }),
+    [pause],
+  )
+  return (
+    <AutoSaveContext.Provider value={value}>
+      {children}
+      <AutoSave delayMs={1000} pause={pause} />
+    </AutoSaveContext.Provider>
+  )
+}

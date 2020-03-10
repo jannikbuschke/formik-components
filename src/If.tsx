@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Field, FieldProps } from "formik"
+import { Field, FieldProps, useField } from "formik"
 
 export function If({
   name,
@@ -42,37 +42,47 @@ export function IfValid({ children }: { children: React.ReactNode }) {
 }
 
 export function IfDirty({ children }: { children: React.ReactNode }) {
+  // const ctx = useFormikContext()
   return (
     <Field name={name}>
-      {({ field, form }: FieldProps<any>) => form.dirty && children}/>
+      {({ form }: FieldProps<any>) => (form.dirty ? children : null)}/>
     </Field>
   )
 }
 
 export function IfSubmitting({ children }: { children: React.ReactNode }) {
   return (
-    <Field name={name}>
-      {({ field, form }: FieldProps<any>) => form.isSubmitting && children}/>
+    <Field>
+      {({ form }: FieldProps<any>) => (form.isSubmitting ? children : null)}
     </Field>
   )
 }
 
 export function IfValidating({ children }: { children: React.ReactNode }) {
-    return <Field>
-        {({ field, form }: FieldProps<any>) => form.isValidating? children:null}/>
+  return (
+    <Field>
+      {({ field, form }: FieldProps<any>) =>
+        form.isValidating ? children : null
+      }
+      />
     </Field>
+  )
 }
 
 export function IfTouched({ children }: { children: React.ReactNode }) {
-    return <Field>
-        {({ field, form }: FieldProps<any>) => form.touched?children:null}/>
+  return (
+    <Field>
+      {({ field, form }: FieldProps<any>) => (form.touched ? children : null)}/>
     </Field>
+  )
 }
 
 export function IfError({ children }: { children: React.ReactNode }) {
-    return <Field>
-        {({ field, form }: FieldProps<any>) => (form.errors) && children}/>
+  return (
+    <Field>
+      {({ field, form }: FieldProps<any>) => form.errors && children}/>
     </Field>
+  )
 }
 
 export function IfField({
