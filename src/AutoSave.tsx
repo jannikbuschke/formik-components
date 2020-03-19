@@ -57,3 +57,22 @@ export function AutoSaveProvider({
     </AutoSaveContext.Provider>
   )
 }
+
+export function SimpleAutoSave({ delayMs }: { delayMs: number }) {
+  const ctx = useFormikContext()
+  const debouncedSubmit = React.useCallback(
+    debounce(() => {
+      // this might not work
+      if (ctx.dirty && !ctx.isSubmitting) {
+        ctx.submitForm().then(() => {})
+      }
+    }, delayMs),
+    [delayMs, ctx.dirty, ctx.submitForm],
+  )
+
+  React.useEffect(() => {
+    debouncedSubmit()
+  }, [ctx.values])
+
+  return null
+}
