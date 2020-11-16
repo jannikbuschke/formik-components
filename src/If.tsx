@@ -36,7 +36,7 @@ export function IfNot({
 export function IfValid({ children }: { children: React.ReactNode }) {
   return (
     <Field name={name}>
-      {({ form }: FieldProps<any>) => form.isValid && children}/>
+      {({ form }: FieldProps<any>) => form.isValid && children}
     </Field>
   )
 }
@@ -45,7 +45,7 @@ export function IfDirty({ children }: { children: React.ReactNode }) {
   // const ctx = useFormikContext()
   return (
     <Field name={name}>
-      {({ form }: FieldProps<any>) => (form.dirty ? children : null)}/>
+      {({ form }: FieldProps<any>) => (form.dirty ? children : null)}
     </Field>
   )
 }
@@ -64,7 +64,6 @@ export function IfValidating({ children }: { children: React.ReactNode }) {
       {({ field, form }: FieldProps<any>) =>
         form.isValidating ? children : null
       }
-      />
     </Field>
   )
 }
@@ -72,7 +71,7 @@ export function IfValidating({ children }: { children: React.ReactNode }) {
 export function IfTouched({ children }: { children: React.ReactNode }) {
   return (
     <Field>
-      {({ field, form }: FieldProps<any>) => (form.touched ? children : null)}/>
+      {({ field, form }: FieldProps<any>) => (form.touched ? children : null)}
     </Field>
   )
 }
@@ -80,7 +79,7 @@ export function IfTouched({ children }: { children: React.ReactNode }) {
 export function IfError({ children }: { children: React.ReactNode }) {
   return (
     <Field>
-      {({ field, form }: FieldProps<any>) => form.errors && children}/>
+      {({ field, form }: FieldProps<any>) => form.errors && children}
     </Field>
   )
 }
@@ -101,7 +100,6 @@ export function IfField({
           ? field.value && children
           : field.value == value && children
       }
-      />
     </Field>
   )
 }
