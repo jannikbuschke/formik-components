@@ -25,14 +25,16 @@ interface Props {
     array: FieldArrayRenderProps,
     path: string,
   ) => React.ReactNode,
-  children: React.ReactNode
+  children: React.ReactNode,
+  sortableListProps: any
 }
 
 export function SortableArray({
   name,
   renderNewPlaceholder,
   renderItem,
-  children
+  children,
+  sortableListProps
 }: Props) {
   return (
     <Field name={name}>
@@ -55,25 +57,25 @@ export function SortableArray({
                     ),
                   ])
               } else {
-                return (
-                  <SortableList
-                    values={values}
-                    array={array}
-                    name={name}
-                    onSortEnd={({
-                      oldIndex,
-                      newIndex,
-                    }: {
-                      oldIndex: number
-                      newIndex: number
-                    }) => {
-                      array.move(oldIndex, newIndex)
-                    }}
-                    useDragHandle={true}
-                    lockAxis={"y"}
-                    lockToContainerEdges={true}
-                  >{children}</SortableList>
-                )
+                const onSortEnd = ({ oldIndex, newIndex }: {
+                  oldIndex: number
+                  newIndex: number
+                }) => {
+                  array.move(oldIndex, newIndex)
+                }
+
+                const props = {
+                  values,
+                  array,
+                  name,
+                  onSortEnd,
+                  useDragHandle: true,
+                  lockAxis: 'y',
+                  lockToContainerEdges: true,
+                  ...sortableListProps
+                };
+
+                return <SortableList {...props}>{children}</SortableList>
               }
             }}
           </FieldArray>
