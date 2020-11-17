@@ -7,7 +7,19 @@ const Item = SortableElement(({ children }: { children: React.ReactNode }) => (
 ))
 
 const SortableList = SortableContainer(
-  ({ values, array, name, children }: any) => {
+  ({renderItem, values, array, name, children }: any) => {
+    if(renderItem) {
+      return (
+        <div>
+          {values.map((_: any, i: number) => (
+            <Item key={i} index={i}>
+              {renderItem(i, false, array, `${name}.${i}.`)}
+            </Item>
+          ))}
+        </div>
+      )
+    }
+
     return (
       <>
         {children(values, name, Item, array)}
@@ -65,6 +77,7 @@ export function SortableArray({
                 }
 
                 const props = {
+                  renderItem,
                   values,
                   array,
                   name,
