@@ -7,15 +7,23 @@ const Item = SortableElement(({ children }: { children: React.ReactNode }) => (
 ))
 
 const SortableList = SortableContainer(
-  ({ renderItem, value, array, name }: any) => {
+  ({renderItem, values, array, name, children }: any) => {
+    if(renderItem) {
+      return (
+        <div>
+          {values.map((_: any, i: number) => (
+            <Item key={i} index={i}>
+              {renderItem(i, false, array, `${name}.${i}.`)}
+            </Item>
+          ))}
+        </div>
+      )
+    }
+
     return (
-      <div>
-        {value.map((_: any, i: number) => (
-          <Item key={i} index={i}>
-            {renderItem(i, false, array, name + "." + i + ".")}
-          </Item>
-        ))}
-      </div>
+      <>
+        {children(values, name, Item, array)}
+      </>
     )
   },
 )
@@ -28,13 +36,17 @@ interface Props {
     isLast: boolean,
     array: FieldArrayRenderProps,
     path: string,
-  ) => React.ReactNode
+  ) => React.ReactNode,
+  children: React.ReactNode,
+  sortableListProps: any
 }
 
 export function SortableArray({
   name,
   renderNewPlaceholder,
   renderItem,
+  children,
+  sortableListProps
 }: Props) {
   return (
     <Field name={name}>
@@ -42,41 +54,41 @@ export function SortableArray({
         return (
           <FieldArray name={name}>
             {(array) => {
-              const value = field.value || []
+              const values = field.value || []
               if (renderNewPlaceholder) {
-                return value
+                return values
                   .map((_: any, i: number) =>
                     renderItem(i, false, array, name + "." + i + "."),
                   )
                   .concat([
                     renderItem(
-                      value.length,
+                      values.length,
                       true,
                       array,
-                      name + "." + value.length + ".",
+                      name + "." + values.length + ".",
                     ),
                   ])
               } else {
-                return (
-                  <SortableList
-                    renderItem={renderItem}
-                    value={value}
-                    array={array}
-                    name={name}
-                    onSortEnd={({
-                      oldIndex,
-                      newIndex,
-                    }: {
-                      oldIndex: number
-                      newIndex: number
-                    }) => {
-                      array.move(oldIndex, newIndex)
-                    }}
-                    useDragHandle={true}
-                    lockAxis={"y"}
-                    lockToContainerEdges={true}
-                  />
-                )
+                const onSortEnd = ({ oldIndex, newIndex }: {
+                  oldIndex: number
+                  newIndex: number
+                }) => {
+                  array.move(oldIndex, newIndex)
+                }
+
+                const props = {
+                  renderItem,
+                  values,
+                  array,
+                  name,
+                  onSortEnd,
+                  useDragHandle: true,
+                  lockAxis: 'y',
+                  lockToContainerEdges: true,
+                  ...sortableListProps
+                };
+
+                return <SortableList {...props}>{children}</SortableList>
               }
             }}
           </FieldArray>
