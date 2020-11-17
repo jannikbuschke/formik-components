@@ -7,15 +7,11 @@ const Item = SortableElement(({ children }: { children: React.ReactNode }) => (
 ))
 
 const SortableList = SortableContainer(
-  ({ renderItem, value, array, name }: any) => {
+  ({ values, array, name, children }: any) => {
     return (
-      <div>
-        {value.map((_: any, i: number) => (
-          <Item key={i} index={i}>
-            {renderItem(i, false, array, name + "." + i + ".")}
-          </Item>
-        ))}
-      </div>
+      <>
+        {children(values, name, Item, array)}
+      </>
     )
   },
 )
@@ -28,13 +24,15 @@ interface Props {
     isLast: boolean,
     array: FieldArrayRenderProps,
     path: string,
-  ) => React.ReactNode
+  ) => React.ReactNode,
+  children: React.ReactNode
 }
 
 export function SortableArray({
   name,
   renderNewPlaceholder,
   renderItem,
+  children
 }: Props) {
   return (
     <Field name={name}>
@@ -42,25 +40,24 @@ export function SortableArray({
         return (
           <FieldArray name={name}>
             {(array) => {
-              const value = field.value || []
+              const values = field.value || []
               if (renderNewPlaceholder) {
-                return value
+                return values
                   .map((_: any, i: number) =>
                     renderItem(i, false, array, name + "." + i + "."),
                   )
                   .concat([
                     renderItem(
-                      value.length,
+                      values.length,
                       true,
                       array,
-                      name + "." + value.length + ".",
+                      name + "." + values.length + ".",
                     ),
                   ])
               } else {
                 return (
                   <SortableList
-                    renderItem={renderItem}
-                    value={value}
+                    values={values}
                     array={array}
                     name={name}
                     onSortEnd={({
@@ -75,7 +72,7 @@ export function SortableArray({
                     useDragHandle={true}
                     lockAxis={"y"}
                     lockToContainerEdges={true}
-                  />
+                  >{children}</SortableList>
                 )
               }
             }}
